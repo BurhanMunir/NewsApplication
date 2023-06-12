@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NewsApplication.Views.NewsPage"
+             xmlns:model="clr-namespace:NewsApplication.Models"
+             NavigationPage.HasNavigationBar="False"
+             x:Name="newspage">
+    <Grid RowDefinitions="0.12*,*,0.2*" BackgroundColor="{StaticResource GrayColor}">
+        <Grid BackgroundColor="{StaticResource GreenColor}" Padding="20" ColumnDefinitions="0.2*,2*,0.4*">
+
+            <Image Source="user" HeightRequest="40" Grid.Column="0" HorizontalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+
+
+            <Label Text="My Community" TextColor="White" FontAttributes="Bold" Margin="-20,0,0,0" Grid.Column="1"/>
+            
+            <Image Source="logout" HorizontalOptions="EndAndExpand" Margin="100,0,0,0" Grid.Column="2"/>
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Margin="20">
+            <Label Text="News" TextColor="Black" FontAttributes="Bold"/>
+            <Label Text="More than buildings,streets and open spaces, a place is created by the people who live, work and relax in it. Feel better connected and read the latest news in your community"
+                   FontSize="8"/>
+            <Grid RowDefinitions="*" ColumnDefinitions="*">
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Color="{StaticResource GreenColor}" Grid.Row="0" Grid.Column="0"
+                                   HeightRequest="100" VerticalOptions="Center"
+                                   />
+                <CollectionView ItemsSource="{Binding News}"  Grid.Row="0" Grid.Column="0" HeightRequest="400"
+                                SelectedItem="{Binding SelectedNews}" x:Name="list"
+                                
+                               >
+                    
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                HorizontalItemSpacing="10"
+                
+                Span="2"
+                Orientation="Vertical"
+                VerticalItemSpacing="10"
+                />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid RowDefinitions="3*,1*" x:DataType="model:News">
+                                <Image
+                        Aspect="AspectFit"
+                        BindingContext="{Binding .}"
+                      
+                        HeightRequest="120"
+                        HorizontalOptions="Center"
+                        WidthRequest="120"
+                       
+                    
+                        Source="{Binding ImageUrl}"
+                        VerticalOptions="Center"
+                        >
+                                    
+                                </Image>
+                                <Label Text="{Binding Title}" Grid.Row="1" FontSize="10"/>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" Command="{Binding BindingContext.SelectNewsCommand, Source={x:Reference newspage}}" CommandParameter="{Binding StoryUrl}"/>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                
+            </Grid>
+        </VerticalStackLayout>
+        <Grid Grid.Row="2" BackgroundColor="DarkGray">
+            
+                <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="Center"  ColumnDefinitions="0.1*,*,0.1*" HeightRequest="60">
+                    <Image Source="backbtn" Grid.Column="0"/>
+                    <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="CenterAndExpand">
+                    <CollectionView x:Name="btnList" SelectionMode="Single"
+                                    SelectionChanged="btnList_SelectionChanged"
+                                    >
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                <Button x:Name="btnCard" BackgroundColor="{Binding BackgroundColor}" Text="{Binding PageNumber}" Margin="10,0,10,0" TextColor="Black" 
+                                           Clicked="btnCard_Clicked" CommandParameter="{Binding .}" />
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        
+                    </CollectionView>
+                    </HorizontalStackLayout>
+                    <Image Source="forward" Grid.Column="2"/>
+                </Grid>
+           
+            
+        </Grid>
+    </Grid>
+</ContentPage>
